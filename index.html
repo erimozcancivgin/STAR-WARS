@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="" type="image/icon">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Todo List</title>
+</head>
+
+<body>
+
+    <main>
+        <div class="todo-list-wrapper">
+            <div class="todo-list-header">
+                <div class="title">
+                    <h1>todo list</h1>
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="add-todo-button js-add-todo-button">+</button>
+                </div>
+
+
+            </div>
+            <div class="todo-list-body">
+                <div class="list">
+                    <div class="list-header">
+                        <ul>
+                            <li>first name</li>
+                            <li>last name</li>
+                            <li>age</li>
+                            <li>gender</li>
+                            <li>actions</li>
+                        </ul>
+                    </div>
+                    <div class="list-body js-list-body">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="add-todo-modal js-add-todo-modal">
+            <form class="js-new-todo">
+                <div class="input-group">
+                    <span>name</span>
+                    <input type="text" name="first_name" placeholder="name">
+                </div>
+                <div class="input-group">
+                    <span>last name</span>
+                    <input type="text" name="last_name" placeholder="name">
+                </div>
+                <div class="input-group">
+                    <span>age</span>
+                    <input type="text" name="age" placeholder="age">
+                </div>
+                <div class="input-group">
+                    <span>gender</span>
+                    <input type="text" name="gender" placeholder="gender">
+                </div>
+
+                <button type="submit" class="js-add-new-todo">save</button>
+            </form>
+        </div>
+    </main>
+
+
+
+
+
+    <script type="module" src="./assets/js/app.js"></script>
+</body>
+
+</html>
