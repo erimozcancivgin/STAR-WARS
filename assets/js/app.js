@@ -1,118 +1,85 @@
 import { UI } from "./ui.js";
+import { Request } from "./request.js";
 const ui = new UI();
+const request = new Request();
+
+
+
+// const aside = document.querySelector(".aside-body")
 
 // Setup module
 // ------------------------------
 
-const ecommerceBasic = (function () {
-  const url = "http://localhost:3000/todoList/"
-  //
+
+const swapi = (function () {
+  const asideBody = document.querySelector(".js-home-worlds")
+  const asideButton = document.querySelector(".js-aside-button")
+  const asideWrapper = document.querySelector(".js-aside-wrapper")
+  const containerBody = document.querySelector(".js-container-body")
+  const containerCard = document.querySelector(".js-container")
+  const filter = document.querySelector(".js-search-input")
   // Setup module components
   //
 
-  // Hover Effect
+
   const _eventListeners = function () {
-    $(document).on("click", ".js-add-todo-button", _triggerNewTodoModal)
-    $(document).on("click", ".js-add-todo-modal", _closeNewTodoModal)
-    $(document).on("submit", ".js-new-todo", _addNewTodoFromModal)
-    $(document).on("click", ".js-remove-todo", _removeTodoFromList)
-    $(document).on("click", ".js-update-todo", _editTodoFromList)
-    $(document).on('keydown', function (event) {
-      if (event.key == "Escape" || event.key == 27) {
-        $(".js-add-todo-modal").removeClass("active")
-          ;
-      }
-    });
+    asideButton.addEventListener("click", _toggleSideMenu)
+    filter.addEventListener("keyup", _filterCharacters)
 
-  };
-  const _removeTodoFromList = function () {
-    console.log("asdgy"); $.ajax({
-      url: url + $(this).attr("data-id"),
-      type: "DELETE",
-      dataType: "json",
-      success: function (data) {
-        _getTodos()
-      }
-    });
+
   }
-
-  const _editTodoFromList = function () {
-    const firstName = $(this).closest("ul").find("[data-first-name]")
-    const lastName = $(this).closest("ul").find("[data-last-name]")
-    const age = $(this).closest("ul").find("[data-age]")
-    const gender = $(this).closest("ul").find("[data-gender]")
-    console.log(firstName.attr("data-first-name"));
-
-    $(".js-new-todo").attr("data-id", $(this).attr("data-id"))
-    $('[name="first_name"]').val(firstName.attr("data-first-name"))
-    $('[name="last_name"]').val(lastName.attr("data-last-name"))
-    $('[name="age"]').val(age.attr("data-age"))
-    $('[name="gender"]').val(gender.attr("data-gender"))
-    $(".js-add-todo-modal").addClass("active")
-    $(".js-add-new-todo").addClass("update")
-  }
-
-
-  const _triggerNewTodoModal = function () {
-    $(".js-add-todo-modal").addClass("active")
-    $(".js-add-new-todo").removeClass("update")
-  }
-
-  const _closeNewTodoModal = function (e) {
-    if (e.target === this) {
-      $(".js-add-todo-modal").removeClass("active")
-    }
-  }
-
-  const _addNewTodoFromModal = function (e) {
-    e.preventDefault()
-
-    let formValues = {}
-    formValues.first_name = $(this).find('[name="first_name"]').val()
-    formValues.last_name = $(this).find('[name="last_name"]').val()
-    formValues.age = $(this).find('[name="age"]').val()
-    formValues.gender = $(this).find('[name="gender"]').val()
-    if (formValues.first_name && formValues.last_name && formValues.age && formValues.gender) {
-      if ($(".js-add-new-todo").hasClass("update")) {
-        $.ajax({
-          url: url + $(this).attr("data-id"),
-          type: "PUT",
-          data: formValues,
-          dataType: "json",
-          success: function (data) {
-            _getTodos()
-          }
-        });
+  const _filterCharacters = function (e) {
+    const filterValue = e.target.value.toLowerCase()
+    const listItems = document.querySelectorAll(".js-characters")
+    listItems.forEach(function (listItem) {
+      const text = listItem.textContent.toLowerCase()
+      if (text.indexOf(filterValue) === -1) {
+        listItem.setAttribute("style", "display : none")
       }
       else {
-        $.ajax({
-          url: url,
-          type: "POST",
-          data: formValues,
-          dataType: "json",
-          success: function (data) {
-            _getTodos()
-          }
-        });
+        listItem.setAttribute("style", "display : block")
       }
+    })
+  }
 
+
+  const _toggleSideMenu = function () {
+
+    if (asideWrapper.classList.contains('active')) {
+      asideWrapper.classList.remove("active")
+    }
+    else {
+      asideWrapper.classList.add("active")
+    }
+    _blurBackground()
+  }
+
+  const _blurBackground = function () {
+    if (asideWrapper.classList.contains('active')) {
+      containerCard.classList.add("passive")
+    }
+
+    else {
+      containerCard.classList.remove("passive")
     }
 
   }
 
+  // Hover Effect
+  const _getPlanets = function () {
+    request.get("http://localhost:3000/homeWorlds").then((results) => {
 
-  const _getTodos = function () {
-    // $.get(URL,callback)
-    ui.resetNewTodoModalUI()
-    $.ajax({
-      url: url,
-      type: "GET",
-      dataType: "json",
-      success: function (data) {
-        ui.setTodo($(".js-list-body"), data);
-      }
-    });
+      ui.setPlanetsUI(results, asideBody);
+
+
+    })
+  };
+  const _getCharacters = function () {
+    request.get("http://localhost:3000/results").then((results) => {
+      ui.setCharactersUI(results, containerBody)
+    })
   }
+
 
   //
   // Return objects assigned to module
@@ -120,8 +87,9 @@ const ecommerceBasic = (function () {
 
   return {
     init: function () {
-      _eventListeners();
-      _getTodos()
+      _eventListeners()
+      _getPlanets();
+      _getCharacters();
     },
   };
 })();
@@ -130,5 +98,5 @@ const ecommerceBasic = (function () {
 // ------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
-  ecommerceBasic.init();
+  swapi.init();
 });

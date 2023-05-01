@@ -1,32 +1,35 @@
 export class UI {
 
-  setTodo(element, item) {
-    element.html("")
-    item.forEach(item => {
-      element.append(`
-                  <ul>
-                  <li data-first-name="${item.first_name}">${item.first_name}</li>
-                  <li data-last-name="${item.last_name}">${item.last_name}</li>
-                  <li data-age="${item.age}">${item.age}</li>
-                  <li data-gender="${item.gender}">${item.gender}</li>
-                  <li>
-                      <button type="button" data-id="${item.id}" class="js-remove-todo"> delete</button>
-                      <button type="button" data-id="${item.id}" class = "js-update-todo"> update</button>
-                  </li>
-              </ul>`
-      )
+  setPlanetsUI(homeWorlds, aside) {
+    homeWorlds.forEach(homeWorld => {
+      aside.innerHTML +=
+        `<li class="home-names">
+      ${homeWorld.worldName}
+  </li>`
     });
   }
-  resetNewTodoModalUI(){
-    $('[name="first_name"]').val("")
-    $('[name="last_name"]').val("")
-    $('[name="age"]').val("")
-    $('[name="gender"]').val("")
-    $(".js-add-todo-modal").removeClass("active")
-
-
+  setCharactersUI(character, containerBody) {
+    character.forEach(results => {
+      containerBody.innerHTML +=
+        `<li class="characters js-characters"> 
+        <span class="character-name"> ${results.name} </span> 
+        <span> Height: ${results.height}</span> 
+        <span> Mass: ${results.mass}</span> 
+        <span> Hair Color: ${results.hair_color}</span> 
+        <span> Skin Color: ${results.skin_color}</span> 
+        <span> Eye Color: ${results.eye_color}</span> 
+        <span> Birth Year: ${results.birth_year}</span> 
+        <span> Gender: ${results.gender}</span> 
+        <span> Homeworld: ${results.homeworld}</span>
+        </li>
+        `
+      if (character === 1) {
+        containerBody.style.display == 'flex'
+      }
+    })
   }
-
 
 
 }
+
+
